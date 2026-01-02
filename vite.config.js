@@ -13,7 +13,11 @@ export default defineConfig({
         tailwindcss(),
     ],
     server: {
+        host: 'web-laravel.test',
         cors: true,
+        hmr: {
+            host: 'web-laravel.test',
+        },
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },
