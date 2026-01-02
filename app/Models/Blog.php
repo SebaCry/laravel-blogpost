@@ -9,4 +9,14 @@ class Blog extends Model
 {
     /** @use HasFactory<\Database\Factories\BlogFactory> */
     use HasFactory;
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class); // Model <- Categoria
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class); // Model <- User
+    }
 }

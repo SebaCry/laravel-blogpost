@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\QuestionController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -7,9 +10,13 @@ use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [PageController::class, 'index'])->name('home');
+Route::get('blogs', [BlogController::class, 'index'])->name('blogs');
+
+
+Route::get('questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
+Route::get('blogs/{blog}', [BlogController::class, 'show'])->name('blogs.show');
+
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
