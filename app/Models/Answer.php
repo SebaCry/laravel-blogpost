@@ -31,4 +31,26 @@ class Answer extends Model
         return $this->belongsTo(Question::class);
     }
 
+    public function hearts()
+    {
+        return $this->morphMany(Heart::class, 'heartable')  ; // able
+    }
+
+    public function isHearted()
+    {
+        return $this->hearts()->where('user_id', 20)->exists();
+    }
+
+    public function heart()
+    {
+        $this->hearts()->create([
+            'user_id' => 20,
+        ]);
+    }
+
+    public function unheart()
+    {
+        $this->hearts()->where('user_id', 20)->delete();
+    }
+
 }
