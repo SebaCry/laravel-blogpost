@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\QuestionController;
@@ -16,6 +17,8 @@ Route::get('blogs', [BlogController::class, 'index'])->name('blogs');
 
 Route::get('questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
 Route::get('blogs/{blog}', [BlogController::class, 'show'])->name('blogs.show');
+
+Route::post('answers/{question}', [AnswerController::class, 'store'])->name('answers.store');
 
 
 Route::view('dashboard', 'dashboard')
