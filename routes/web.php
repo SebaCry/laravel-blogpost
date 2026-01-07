@@ -19,6 +19,7 @@ Route::get('questions/{question}', [QuestionController::class, 'show'])->name('q
 Route::get('blogs/{blog}', [BlogController::class, 'show'])->name('blogs.show');
 
 Route::post('answers/{question}', [AnswerController::class, 'store'])->name('answers.store');
+Route::post('questions/{question}', [QuestionController::class, 'destroy '])->name('questions.destroy');
 
 
 Route::view('dashboard', 'dashboard')
