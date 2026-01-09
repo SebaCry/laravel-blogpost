@@ -12,6 +12,13 @@ class Question extends Model
     /** @use HasFactory<\Database\Factories\QuestionFactory> */
     use HasFactory, HasHeart;
 
+    protected $fillable = [
+        'user_id',
+        'category_id',
+        'title',
+        'content'
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class); // Question <- Categoria
