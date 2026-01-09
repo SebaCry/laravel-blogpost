@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Comment extends Component
@@ -31,7 +32,7 @@ class Comment extends Component
 
         $this->commentable->comments()->create([
             'content' => $data['content'],
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
         ]);
 
         $this->reset('content', 'showForm');

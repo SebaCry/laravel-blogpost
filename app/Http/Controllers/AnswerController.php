@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Question;
+use Illuminate\Support\Facades\Auth;
 
 class AnswerController extends Controller
 {
@@ -17,7 +18,7 @@ class AnswerController extends Controller
 
         $question->answers()->create([
             'content' => $request->content,
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
         ]);
 
         return back();

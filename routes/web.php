@@ -40,25 +40,24 @@ Route::get('blogs/{blog}', [BlogController::class, 'show'])->name('blogs.show');
 */
 
 // Listado de preguntas
-Route::get('questions', [QuestionController::class, 'index'])->name('questions.index');
+Route::get('foro', [QuestionController::class, 'index'])->name('questions.index');
 
 // Crear pregunta
-Route::get('questions/create', [QuestionController::class, 'create'])->name('questions.create')->middleware('auth');
-Route::post('questions', [QuestionController::class, 'store'])->name('questions.store')->middleware('auth');
-
+Route::get('foro/create', [QuestionController::class, 'create'])->name('questions.create')->middleware('auth');
+Route::post('foro', [QuestionController::class, 'store'])->name('questions.store')->middleware('auth');
 // Editar pregunta
-Route::get('questions/{question}/edit', [QuestionController::class, 'edit'])->name('questions.edit')->middleware('auth');
-Route::put('questions/{question}', [QuestionController::class, 'update'])
+Route::get('foro/{question:slug}/editar', [QuestionController::class, 'edit'])->name('questions.edit')->middleware('auth');
+Route::put('foro/{question:slug}', [QuestionController::class, 'update'])
     ->name('questions.update')
     ->middleware('auth','can:update,question');
 
 // Eliminar pregunta
-Route::delete('questions/{question}', [QuestionController::class, 'destroy'])
+Route::delete('foro/{question:slug}', [QuestionController::class, 'destroy'])
     ->name('questions.destroy')
     ->middleware('auth', 'can:delete,question');
 
 // Detalle de pregunta
-Route::get('questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
+Route::get('foro/{question:slug}', [QuestionController::class, 'show'])->name('questions.show');
 
 /*
 |--------------------------------------------------------------------------

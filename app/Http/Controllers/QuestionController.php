@@ -2,38 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreQuestionRequest;
+use App\Http\Requests\UpdateQuestionRequest;
 use App\Models\Category;
 use App\Models\Question;
-use Illuminate\Http\Request;
+use App\Support\QuestionShowLoader;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
-    public function show(Question $question) // Se hace un Route Model Binding, osea: un parametro que es una instancia del modelo Question
+    public function show(Question $question, QuestionShowLoader $loader) // Se hace un Route Model Binding, osea: un parametro que es una instancia del modelo Question
     // Y se hace una consulta automaticamente para buscar el Question con el id que viene en la URL
 
     {
-        $userId = auth()->id();
-
-        $question->load([
-            'user',
-            'category',
-
-            'answers' => fn ($query) => $query->with([
-                'user',
-                'hearts' => fn ($query) => $query->where('user_id', $userId),
-                'comments' => fn ($query) => $query->with([
-                    'user',
-                    'hearts' => fn ($query) => $query->where('user_id', $userId),
-                ]),
-            ]),
-
-            'comments' => fn ($query) => $query->with([
-                'user',
-                'hearts' => fn ($query) => $query->where('user_id', $userId),
-            ]),
-
-            'hearts' => fn ($query) => $query->where('user_id', $userId)
-        ]);
+        $loader->load($question);
 
         return view('questions.show', [
             'question' => $question
@@ -70,19 +52,12 @@ class QuestionController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreQuestionRequest $request)
     {
-        $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'title' => 'required|string|max:255',
-            'content' => 'required|string'
-        ]);
 
         $question = Question::create([
-            'user_id' => auth()->id(),
-            'category_id' => $request->category_id,
-            'title' => $request->title,
-            'content' => $request->content
+            'user_id' => Auth::id(),
+            ...$request->validated()
         ]);
 
         return redirect()->route('questions.show', $question);
@@ -99,19 +74,9 @@ class QuestionController extends Controller
         ]);
     }
 
-    public function update(Request $request, Question $question)
+    public function update(UpdateQuestionRequest $request, Question $question)
     {
-        $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'title' => 'required|string|max:255',
-            'content' => 'required|string'
-        ]);
-
-        $question->update([
-            'category_id' => $request->category_id,
-            'title' => $request->title,
-            'content' => $request->content
-        ]);
+        $question->update($request->validated());
 
         return redirect()->route('questions.show', $question);
     }
