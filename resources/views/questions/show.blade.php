@@ -16,11 +16,15 @@
                     {{ $question->created_at->diffForHumans() }}
                 </p>
 
+                @auth
                 <div class="flex items-center gap-2">
+                    @can('update',$question)
                     <a href="{{ route('questions.edit', $question) }}" class="text-xs font-semibold hover:underline">
                         Edit
                     </a>
+                    @endcan
 
+                    @can('delete', $question)
                     <form action="{{ route('questions.destroy', $question) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar esta pregunta?');">
                         @csrf
                         @method('DELETE')
@@ -28,7 +32,9 @@
                             Eliminar
                         </button>
                     </form>
+                    @endcan
                 </div>
+                @endauth
             </div>
         </div>
     </div>
@@ -64,6 +70,7 @@
     </ul>
 
      <div class="mt-8">
+        @auth
         <h3 class="text-lg font-semibold mb-2">Tu Respuesta...</h3>
 
         <form action="{{ route('answers.store', $question) }}" method="POST">
@@ -78,6 +85,13 @@
                 Enviar Respuesta
             </button>
         </form>
+        @else
+        <p class="text-gray-500">
+            <a href="{{ route('login') }}" class="rounded-md text-sm hover:underline">
+                Inicia sesión para enviar una respuesta.
+            </a>
+        </p>
+        @endauth
     </div>
 </div>
 </x-forum.layouts.app>

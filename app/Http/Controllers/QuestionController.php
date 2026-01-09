@@ -12,7 +12,7 @@ class QuestionController extends Controller
     // Y se hace una consulta automaticamente para buscar el Question con el id que viene en la URL
 
     {
-        $userId = 20;
+        $userId = auth()->id();
 
         $question->load([
             'user',
@@ -55,7 +55,7 @@ class QuestionController extends Controller
 
     public function destroy(Question $question)
     {
-        // eliminar en onDelete Cascade
+
         $question->delete;
 
         return redirect()->route('home');
@@ -79,7 +79,7 @@ class QuestionController extends Controller
         ]);
 
         $question = Question::create([
-            'user_id' => 20,
+            'user_id' => auth()->id(),
             'category_id' => $request->category_id,
             'title' => $request->title,
             'content' => $request->content
